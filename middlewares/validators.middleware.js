@@ -25,16 +25,24 @@ const createUserValidators = [
 		.withMessage('Password must be at least 8 characters long')
 		.isAlphanumeric()
 		.withMessage('Password must contain letters and numbers'),
-	body('role')
-		.notEmpty()
-		.withMessage('Role cannot be empty')
-		.isIn(['user', 'admin'])
-		.withMessage('Role must be either user or admin'),
 	checkResult,
 ];
+
+const createArtistValidators = [
+	body('name').notEmpty().withMessage('Name cannot be empty'),
+	body('genre').notEmpty().withMessage('Genre cannot be empty'),
+	body('imgUrl').notEmpty().withMessage('Image URL cannot be empty'),
+	checkResult,
+];
+
+const createSongValidators = [
+	body('title').notEmpty().withMessage('Title cannot be empty'),
+]
 
 
 
 module.exports = { 
-	createUserValidators  , 
+	createUserValidators  ,
+	createArtistValidators,
+	createSongValidators,
 };

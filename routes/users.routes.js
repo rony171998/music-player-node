@@ -31,9 +31,6 @@ usersRouter.get('/', getAllUsers);
 
 usersRouter.use(protectSession);
 
-usersRouter.get('/:id',userExists, getUserById);
-
-
 usersRouter
 	.use('/:id', userExists)
 	.route('/:id')

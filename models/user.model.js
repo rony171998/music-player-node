@@ -1,30 +1,39 @@
-const { db, DataTypes } = require('../utils/database.util');
+const mongoose = require('mongoose');
 
-const User = db.define('user', {
-	id: {
-		primaryKey: true,
-		type: DataTypes.INTEGER,
-		autoIncrement: true,
-		allowNull: false,
-	},
+const userSchema = new mongoose.Schema({
 	name: {
-		type: DataTypes.STRING,
-		allowNull: false,	
+		type: String,
+		required: [true, 'Name is required'],
 	},
 	email: {
-		type: DataTypes.STRING,
-		allowNull: false,
+		type: String,
+		required: [true, 'Email is required'],
 		unique: true,
 	},
 	password: {
-		type: DataTypes.STRING,
-		allowNull: false,
+		type: String,
+		required: [true, 'Password is required'],
+		minlength: [8, 'Password must be at least 8 characters long'],
+		select: false,
 	},
 	status: {
-		type: DataTypes.STRING,
-		allowNull: false,
-		defaultValue: 'active',
+		type: String,
+		default: 'active',
+	},
+
+	}, 
+	{ 
+		toJSON: { virtuals: true }, 
+		toObject: { virtuals: true }
 	}
+);
+
+userSchema.virtual('favoriteSongs', {
+	ref: 'favoriteSong',
+	localField: '_id',
+	foreignField: 'userId',
 });
+
+const User = mongoose.model('user', userSchema);
 
 module.exports = { User };

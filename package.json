@@ -9,7 +9,6 @@
   "scripts": {
     "start": "node server.js",
     "start:dev": "nodemon server.js"
-    
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +22,7 @@
     "firebase": "^9.9.0",
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.6",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.7.3",

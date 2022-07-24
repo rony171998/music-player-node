@@ -6,7 +6,8 @@ const morgan = require('morgan');
 const path = require('path');
 
 const { usersRouter } = require('./routes/users.routes');
-
+const { artistsRouter } = require('./routes/artists.routes');
+const { songsRouter } = require('./routes/songs.routes');
 
 // Global err controller
 const { globalErrorHandler } = require('./controllers/error.controller');
@@ -34,9 +35,12 @@ app.use(helmet());
 // Compress responses
 app.use(compression());
 
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+else app.use(morgan('combined'));
 
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/artists', artistsRouter);
+app.use('/api/v1/songs', songsRouter);
 
 
 
