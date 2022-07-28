@@ -11,7 +11,7 @@ const artistSchema = new mongoose.Schema({
     },
     imgUrl: {
         type: String,
-        
+        required: [true, 'Image URL is required'],       
     },
     status: {
         type: String,
@@ -25,7 +25,7 @@ const artistSchema = new mongoose.Schema({
 );
 
     artistSchema.virtual('album', {
-        ref: 'album',
+        ref: 'Album',
         localField: '_id',
         foreignField: 'artistId',
     });

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const albumSchema = new mongoose.Schema({
+    artistId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Artist',
+        required: [true, 'artistId is required']
+    },
     title: {
         type: String,
         required: [true, 'Title is required'],
@@ -24,9 +29,10 @@ const albumSchema = new mongoose.Schema({
     }
 );
     albumSchema.virtual('songs', {
-        ref: 'song',
+        ref: 'Song',
         localField: '_id',
         foreignField: 'albumId',
+        required: [true, 'Album must have at least one song'],
     });
 const Album = mongoose.model('album', albumSchema);
 module.exports = { Album };

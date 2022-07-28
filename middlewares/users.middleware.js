@@ -8,7 +8,7 @@ const { catchAsync } = require('../utils/catchAsync.util');
 const userExists = catchAsync(async (req, res, next) => {
 	const { id } = req.params;
 
-	const user = await User.findOne({ where: { id ,status:"active"  }  });
+	const user = await User.findById(id.match(/^[0-9a-fA-F]{24}$/), { status: 'active' });
 
 	if (!user) {
 		return next(new AppError('User not found', 404));

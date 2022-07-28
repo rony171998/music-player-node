@@ -5,11 +5,10 @@ const {
 	getAllUsers,
 	createUser,
 	login,
-	getUserById,
 	updateUser,
 	deleteUser,
+	getUser,
 } = require('../controllers/users.controller');
-
 
 const {
 	createUserValidators
@@ -23,18 +22,18 @@ const {
 
 const usersRouter = express.Router();
 
-usersRouter.post('/', createUserValidators, createUser);
+usersRouter.post('/signup', createUserValidators, createUser);
 
 usersRouter.post('/login', login);
 
-usersRouter.get('/', getAllUsers);
-
 usersRouter.use(protectSession);
+
+usersRouter.get('/', getAllUsers);
 
 usersRouter
 	.use('/:id', userExists)
 	.route('/:id')
-	.get(getUserById)
+	.get(getUser)
 	.patch(protectUserAccount, updateUser)
 	.delete(protectUserAccount, deleteUser);
 

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 // Models
 const { User } = require('../models/user.model');
 
+
 // Utils
 const { catchAsync } = require('../utils/catchAsync.util');
 const { AppError } = require('../utils/appError.util');
@@ -15,16 +16,9 @@ const { AppError } = require('../utils/appError.util');
 dotenv.config({ path: './config.env' });
 
 const getAllUsers = catchAsync(async (req, res, next) => {
-	// const users = await User.findAll({
-	// 	include: [
-	// 		{ model: Post, include: { model: Comment, include: User } },
-	// 		{ model: Comment },
-	// 	],
-	// });
-
+	
 	const users = await User.find({ status: 'active' }, '-password')
 		
-
 	res.status(200).json({
 		status: 'success',
 		users,
@@ -63,29 +57,26 @@ const createUser = catchAsync(async (req, res, next) => {
 	});
 });
 
-const getUserById = catchAsync(async (req, res, next) => {
-	const { user } = req;
-
-	res.status(200).json({
-		status: 'success',
-		user,
-	});
-});
-
 const updateUser = catchAsync(async (req, res, next) => {
-	const { user } = req;
+	const { id } = req.params;
 	const { name } = req.body;
 
-	await user.update({ name });
-
+	const user = await User.findByIdAndUpdate(id.match(/^[0-9a-fA-F]{24}$/), {name} , { new: true });
+	if (!user) {
+		return next(new AppError('User not found', 404));
+	}
 	res.status(204).json({ status: 'success' });
+
+	
 });
 
 const deleteUser = catchAsync(async (req, res, next) => {
-	const { user } = req;
+	const { id } = req.params;
 
-	await user.update({ status: 'deleted' });
-
+	const user = await User.findByIdAndUpdate(id.match(/^[0-9a-fA-F]{24}$/), { status: 'deleted' });
+	if (!user) {
+		return next(new AppError('User not found', 404));
+	}
 	res.status(204).json({ status: 'success' });
 });
 
@@ -122,11 +113,26 @@ const login = catchAsync(async (req, res, next) => {
 	});
 });
 
+const getUser = catchAsync(async (req, res, next) => {
+	const { id } = req.params;
+
+	const user = await User.findById(id.match(/^[0-9a-fA-F]{24}$/), { status: 'active' });
+
+	/*if (!user) {
+		return next(new AppError('User not found', 404));
+	}*/
+
+	res.status(200).json({
+		status: 'success',
+		user,
+	});
+});
+
 module.exports = {
 	getAllUsers,
 	createUser,
-	getUserById,
 	updateUser,
 	deleteUser,
 	login,
+	getUser,
 };

@@ -3,6 +3,12 @@ const mongoose = require('mongoose');
 const songSchema = new mongoose.Schema({
     title: {
         type: String,
+        required: [true, 'Title is required']
+    },
+    albumId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Album',
+        required: [true, 'albumId is required']
     },
     status: {
         type: String,
@@ -15,7 +21,7 @@ const songSchema = new mongoose.Schema({
 }
 );   
     songSchema.virtual('favoriteSongs', {
-        ref: 'favoriteSong',
+        ref: 'FavoriteSong',
         localField: '_id',
         foreignField: 'songId',
     });

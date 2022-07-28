@@ -31,12 +31,12 @@ const createUserValidators = [
 const createArtistValidators = [
 	body('name').notEmpty().withMessage('Name cannot be empty'),
 	body('genre').notEmpty().withMessage('Genre cannot be empty'),
-	body('imgUrl').notEmpty().withMessage('Image URL cannot be empty'),
 	checkResult,
 ];
 
 const createSongValidators = [
 	body('title').notEmpty().withMessage('Title cannot be empty'),
+	checkResult,
 ]
 
 
